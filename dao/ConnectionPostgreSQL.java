@@ -6,7 +6,7 @@ import java.sql.SQLException;
 
 public class ConnectionPostgreSQL {
 
-	//blabla
+	//blabla2
 	
 	/**
 	 * URL de connection
