@@ -1,10 +1,13 @@
 package iasig.dao.user;
 
+import java.util.Vector;
+
 
 public abstract class Objet_Postgre<T> {
 	
 	
-
+//	public Vector<T> objets_instanciated = new Vector<T>();
+//	public int nombre_objets;
 	/**
 	 * Permet d'ajouter un objet 
 	 * @param obj Un objet

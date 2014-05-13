@@ -47,6 +47,7 @@ import org.postgis.PGgeometry;
 public class MaisonDAO extends ObjectDao<Maison> {
 
 	
+	
 	@Override
 	public Maison find(long id) {
 		Maison home = new Maison();
@@ -83,7 +84,7 @@ public class MaisonDAO extends ObjectDao<Maison> {
 			
 				PreparedStatement prepare = this	.connect
 	                                                .prepareStatement(
-	                                    	"INSERT INTO maison2 (maison_nom, maison_x, maison_y, maison_z, centroid, niveau) VALUES(?, ?, ?, ?, ?, ?);"
+	                                    	"INSERT INTO maison2 (maison_nom, maison_x, maison_y, maison_z, centroid, niveau, i, j) VALUES(?, ?, ?, ?, ?, ?, ?, ?);"
 	                                                );
 				prepare.setString(1, obj.getNom());
 //				System.out.println(obj.getNom());
@@ -96,11 +97,12 @@ public class MaisonDAO extends ObjectDao<Maison> {
 				prepare.setObject(5, obj.getCentroid());
 //				System.out.println(obj.getCentroid());
 				prepare.setObject(6, obj.getNiveau());
-
+				prepare.setObject(7, obj.i);
+				prepare.setObject(8, obj.j);
 //				System.out.println(prepare.toString());
 
 				prepare.executeUpdate();
-				this.connect.commit();
+				//this.connect.commit();
 				prepare.close();
 
 			

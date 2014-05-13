@@ -76,29 +76,29 @@ public class Main {
 				//System.out.println(maisonDao.find(i).getCentroid());
 				
 				//*
-//				for (Integer j = 1; j <= 10; j++){
-//				for(Integer i = 1; i <= 10000; i++){
-//					//public Maison(Integer id, String X, String Y, String Z, String nom, PGgeometry centroid)
+				for (Integer j = 1; j <= 10; j++){
+				for(Integer i = 1; i <= 10000; i++){
+					//public Maison(Integer id, String X, String Y, String Z, String nom, PGgeometry centroid)
 		//
 		//
-//					Integer X = 1 + (int)(Math.random() * ((10000 - 1) + 1));
-//					Integer Y = 1 + (int)(Math.random() * ((10000 - 1) + 1));
-//					Integer Z = 1 + (int)(Math.random() * ((10000 - 1) + 1));
+					Integer X = 1 + (int)(Math.random() * ((10000 - 1) + 1));
+					Integer Y = 1 + (int)(Math.random() * ((10000 - 1) + 1));
+					Integer Z = 1 + (int)(Math.random() * ((10000 - 1) + 1));
 		//
-		//
-//					String PGgeometryStr ="SRID=" + "4326" + ";" + "POINT("+Long.toString(X)+" "+Long.toString(Y)+" "+Long.toString(Z)+")";
-//					PGgeometry pg = null;
-//					
-//					try {
-//						pg = new PGgeometry(PGgeometry.geomFromString(PGgeometryStr));
-//					} catch (SQLException e) {
-//						// TODO Auto-generated catch block
-//						e.printStackTrace();
-//					} 
-//					Maison maison = new Maison(0, Long.toString(X), Long.toString(Y), Long.toString(Z), "Maison"+Long.toString(i*j), pg, i%4 );
-//					maisonDao.create(maison);
-//				}
-//				}
+			
+					String PGgeometryStr ="SRID=" + "4326" + ";" + "POINT("+Long.toString(X)+" "+Long.toString(Y)+" "+Long.toString(Z)+")";
+					PGgeometry pg = null;
+					
+					try {
+						pg = new PGgeometry(PGgeometry.geomFromString(PGgeometryStr));
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} 
+					Maison maison = new Maison(0, Long.toString(X), Long.toString(Y), Long.toString(Z), "Maison"+Long.toString(i*j), pg, i%4 );
+					maisonDao.create(maison);
+				}
+				}
 				//*/
 				
 				//* ECRIRE UN POLYGONE STYLE POSTGRESQL - NON POSTGIS

@@ -8,6 +8,7 @@ public class ConnectionPostgreSQL {
 
 	//blabla2
 	//blabla3
+	//bkkaka
 	
 	/**
 	 * URL de connection

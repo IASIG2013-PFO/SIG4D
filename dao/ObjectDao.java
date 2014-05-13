@@ -39,5 +39,8 @@ public abstract class ObjectDao<T> extends DAO {
 	 * @param obj	Objet_Postgre<T> 
 	 */
 	public abstract void selection_geographique(Objet_Postgre<T> obj, PGgeometry polygone);
+	
+	//public abstract void selection_par_maille(Objet_Postgre<T> obj, int i_min, int j_min,int i_max, int j_max );
+
  
 }

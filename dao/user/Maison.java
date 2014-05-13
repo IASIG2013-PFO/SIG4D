@@ -14,7 +14,9 @@ public class Maison {
 	private PGgeometry centroid;
 	private Integer niveau;
 	protected String table = "maison2";
-	
+	//rattachement à une maille
+	public Integer i;
+	public Integer j;
 	
 	
 		//constructeur1 - vide
@@ -27,6 +29,8 @@ public class Maison {
 			this.nom = nom; 
 			this.niveau = niveau;
 			this.centroid = centroid;
+			Point pt = (Point)centroid.getGeometry();
+			this.i = (int) ((int)pt.x/100); this.j = (int) ((int)pt.y/100); 
 			}
 	
 		//méthodes publique Accesseur

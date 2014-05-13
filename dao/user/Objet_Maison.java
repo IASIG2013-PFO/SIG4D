@@ -6,12 +6,46 @@ import java.util.Vector;
 public class Objet_Maison extends Objet_Postgre<Maison> {
 
 	private Vector<Maison> objets_instanciated = new Vector<Maison>();
+	/**
+	 * le vecteur de vecteur, portant les objets maisons regroupés par appartenance de maille
+	 */
+	private Vector<Vector<Maison>> objets_instanciated2 = new Vector<Vector<Maison>> ();
+	/**
+	 * la matrice indexant les éléments en mémoire en référence au maillage
+	 */
+	private int[][] matrice_des_objets_instancies;
 	private int nombre_objets;
-
-
+	
+	
+	/**
+	 * Constructeur 1 - Vide
+	 */
+	public Objet_Maison() {
+		// TODO Auto-generated constructor stub
+	}
+	
+	/**
+	 * Constructeur 2 - contruit un 2d array pour le stockage des objets
+	 * @param maille_interval - entier, l'interval de maille pris en mémoire
+	 */
+	
+	public Objet_Maison(int maille_interval){
+		this();
+		//creation de la matrice
+		this.matrice_des_objets_instancies = new int[maille_interval][maille_interval];
+		//creation indexation du vecteur de vecteur d'objet
+		//initialisation de la variable de remplissage
+		int index = 0;
+		for (int i = 0; i < maille_interval; i++ )
+			for (int j = 0; j < maille_interval; i++ )
+				this.matrice_des_objets_instancies[i][j] = index++; 
+	}
+	
+	
 	@Override
 	public void AjoutObjet(Maison maison){
 		objets_instanciated.add(maison);
+		objets_instanciated2.elementAt(	matrice_des_objets_instancies[maison.i][maison.j]).add(maison);
 		nombre_objets++;
 	}
 	
