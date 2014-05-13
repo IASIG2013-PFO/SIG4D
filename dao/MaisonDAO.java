@@ -168,7 +168,7 @@ public class MaisonDAO extends ObjectDao<Maison> {
 	     //" SELECT * FROM maison2 WHERE ST_WITHIN(centroid, ST_GeomFromText('POLYGON((2000 2000,8000 2000, 8000 8000, 2000 8000, 2000 2000))', 4326) )  ;" 
 	      " SELECT * FROM maison2 WHERE ST_WITHIN(centroid, ST_GeomFromText('"+polygone.getValue()+"', 4326) ) ;"
 	                                        		 );
-	        System.out.println(result.toString());
+	        //System.out.println(result.toString());
 			Maison home1 = new Maison();
 
 
@@ -187,7 +187,8 @@ public class MaisonDAO extends ObjectDao<Maison> {
 	        				 	);
 	        		//retourne adresses objets	
 					//System.out.print("Maison_id "+home1.getId()+" ");System.out.println("@ "+home1.toString());
-					obj.AjoutObjet(home1);
+					//on passe en paramètre la maille contenant l'observateur
+					obj.AjoutObjet(home1, 50, 50);
 	        					}
 	        	
 		    } catch (SQLException e) {

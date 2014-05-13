@@ -181,7 +181,7 @@ public class LampadaireDAO extends ObjectDao<Lampadaire> {
 				
 	        		//retourne adresses objets	
 					//System.out.print("Maison_id "+home1.getId()+" ");System.out.println("@ "+home1.toString());
-					obj.AjoutObjet(lamp);
+					obj.AjoutObjet(lamp,0,0);
 	        					}
 	        	
 		    } catch (SQLException e) {

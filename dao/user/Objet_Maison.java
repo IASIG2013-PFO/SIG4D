@@ -14,6 +14,8 @@ public class Objet_Maison extends Objet_Postgre<Maison> {
 	 * la matrice indexant les éléments en mémoire en référence au maillage
 	 */
 	private int[][] matrice_des_objets_instancies;
+	private int maille_interval;
+	private int centre_relatif;
 	private int nombre_objets;
 	
 	
@@ -31,29 +33,49 @@ public class Objet_Maison extends Objet_Postgre<Maison> {
 	
 	public Objet_Maison(int maille_interval){
 		this();
+		this.maille_interval = maille_interval;
+		this.centre_relatif = (int)(maille_interval/2);
 		//creation de la matrice
 		this.matrice_des_objets_instancies = new int[maille_interval][maille_interval];
 		//creation indexation du vecteur de vecteur d'objet
 		//initialisation de la variable de remplissage
 		int index = 0;
-		for (int i = 0; i < maille_interval; i++ )
-			for (int j = 0; j < maille_interval; i++ )
-				this.matrice_des_objets_instancies[i][j] = index++; 
+		for (int i = 0; i < maille_interval; i++ ){
+			for (int j = 0; j < maille_interval; j++ ){
+				this.matrice_des_objets_instancies[i][j] = index++;
+				Vector<Maison> v = new Vector<Maison>();
+				this.objets_instanciated2.add(v);
+			}
+		}
 	}
 	
 	
 	@Override
-	public void AjoutObjet(Maison maison){
-		objets_instanciated.add(maison);
-		objets_instanciated2.elementAt(	matrice_des_objets_instancies[maison.i][maison.j]).add(maison);
+	public void AjoutObjet(Maison maison, int mailleobservateur_i,int mailleobservateur_j ){
+		this.objets_instanciated.add(maison);
+//		System.out.print(maison.i+" ");System.out.println(mailleobservateur_i);
+//		System.out.print(maison.j+" ");System.out.println(mailleobservateur_j);
+//
+
+		int deltai = maison.i - mailleobservateur_i;
+		int deltaj = maison.j - mailleobservateur_j;
+//
+//		System.out.println(deltai + this.centre_relatif);
+//		System.out.println(deltaj + this.centre_relatif);
+		System.out.print(this.matrice_des_objets_instancies[deltai + this.centre_relatif][deltaj + this.centre_relatif]+" "); System.out.println(this.objets_instanciated2.elementAt(this.matrice_des_objets_instancies[deltai + this.centre_relatif][deltaj + this.centre_relatif]).size());
+	
+		this.objets_instanciated2.elementAt(this.matrice_des_objets_instancies[deltai + this.centre_relatif][deltaj + this.centre_relatif]).add(maison);
 		nombre_objets++;
+		
+		
+		
 	}
 	
 	@Override
 	public void getObjet_par_niveau(int niveau) {
-		for (int i = 0; i<objets_instanciated.size(); i++)
-			if (objets_instanciated.elementAt(i).getNiveau() == 1)
-				System.out.println(objets_instanciated.elementAt(i).getNom());
+//		for (int i = 0; i<objets_instanciated.size(); i++)
+//			if (objets_instanciated.elementAt(i).getNiveau() == 1)
+//				System.out.println(objets_instanciated.elementAt(i).getNom());
 	}
 	
 	@Override
