@@ -15,8 +15,9 @@ public class Maison {
 	private Integer niveau;
 	protected String table = "maison2";
 	//rattachement à une maille
-	public Integer i;
-	public Integer j;
+	private Integer maillei;
+	private Integer maillej;
+	
 	
 	
 		//constructeur1 - vide
@@ -30,7 +31,18 @@ public class Maison {
 			this.niveau = niveau;
 			this.centroid = centroid;
 			Point pt = (Point)centroid.getGeometry();
-			this.i = (int) ((int)pt.x/100); this.j = (int) ((int)pt.y/100); 
+			this.maillei = (int) ((int)pt.x/100); this.maillej = (int) ((int)pt.y/100); 
+			}
+		//constructeur3
+		public Maison(Integer id, String X, String Y, String Z, String nom, PGgeometry centroid, Integer niveau, Integer maillei, Integer maillej){
+			this();
+			this.id = id;
+			this.X = X ; this.Y = Y ; this.Z = Z ; 
+			this.nom = nom; 
+			this.niveau = niveau;
+			this.centroid = centroid;
+			Point pt = (Point)centroid.getGeometry();
+			this.maillei = maillei; this.maillej = maillej;
 			}
 	
 		//méthodes publique Accesseur
@@ -39,7 +51,13 @@ public class Maison {
 			return centroid;
 		}
 		
+		public Integer getMaille_i(){
+			return maillei;
+		}
 		
+		public Integer getMaille_j(){
+			return maillej;
+		}
 		
 		public double getX1(){
 			Point pt = (Point)centroid.getGeometry();

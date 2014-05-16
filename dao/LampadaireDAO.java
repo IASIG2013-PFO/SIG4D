@@ -6,6 +6,7 @@ import iasig.dao.user.Lampadaire;
 import iasig.dao.user.Maison;
 import iasig.dao.user.Objet_Maison;
 import iasig.dao.user.Objet_Postgre;
+import iasig.dao.user.Buffer;
 
 import java.awt.FlowLayout;
 import java.awt.Image;
@@ -145,7 +146,7 @@ public class LampadaireDAO extends ObjectDao<Lampadaire> {
 	}
 	
 	@Override
-	public void selection_geographique(Objet_Postgre<Lampadaire> obj, PGgeometry polygone){
+	public void selection_geographique_par_polygone(Objet_Postgre<Lampadaire> obj, PGgeometry polygone){
 		
 		try {
 			
@@ -188,6 +189,12 @@ public class LampadaireDAO extends ObjectDao<Lampadaire> {
 		            e.printStackTrace();
 		    }
 
+		
+	}
+
+	@Override
+	public void selection_geographique(Buffer obj, Float Xobs, Float Yobs, int interval_de_maille) {
+		// TODO Auto-generated method stub
 		
 	}
 

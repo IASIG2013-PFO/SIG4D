@@ -1,6 +1,8 @@
 package iasig.dao;
 
+import iasig.dao.user.Lampadaire;
 import iasig.dao.user.Objet_Postgre;
+import iasig.dao.user.Buffer;
 
 import java.awt.image.BufferedImage;
 
@@ -34,13 +36,21 @@ public abstract class ObjectDao<T> extends DAO {
 	public abstract void delete(T obj);
 	
 	/**
+	 * Méthode abstraite. Permet la selection geographique d'objets Postgis par paramtrage de maille; ne retourne rien
+	 * @param obj	Objet_en_memoire 
+	 * @param Xobs	Position géographique de l'observateur 
+	 * @param Yobs	Position géographique de l'observateur 
+	 * @param interval_de_maille le pas de maille
+	 */
+	public abstract void selection_geographique(Buffer obj, Float Xobs, Float Yobs, int interval_de_maille);
+	
+	/**
 	 * Méthode abstraite. Permet la selection geographique d'objets Postgis par polygon; ne retourne rien
 	 * @param polygone	PGgeometry polygone
 	 * @param obj	Objet_Postgre<T> 
 	 */
-	public abstract void selection_geographique(Objet_Postgre<T> obj, PGgeometry polygone);
-	
-	//public abstract void selection_par_maille(Objet_Postgre<T> obj, int i_min, int j_min,int i_max, int j_max );
+	public abstract void selection_geographique_par_polygone(Objet_Postgre<Lampadaire> obj, PGgeometry polygone);
+
 
  
 }

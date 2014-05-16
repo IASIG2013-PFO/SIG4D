@@ -2,9 +2,11 @@ package iasig.dao;
 
 import iasig.dao.DAO;
 import iasig.dao.GDALtest;
+import iasig.dao.user.Lampadaire;
 import iasig.dao.user.Maison;
 import iasig.dao.user.Objet_Maison;
 import iasig.dao.user.Objet_Postgre;
+import iasig.dao.user.Buffer;
 
 import java.awt.FlowLayout;
 import java.awt.Image;
@@ -97,8 +99,8 @@ public class MaisonDAO extends ObjectDao<Maison> {
 				prepare.setObject(5, obj.getCentroid());
 //				System.out.println(obj.getCentroid());
 				prepare.setObject(6, obj.getNiveau());
-				prepare.setObject(7, obj.i);
-				prepare.setObject(8, obj.j);
+				prepare.setObject(7, obj.getMaille_i());
+				prepare.setObject(8, obj.getMaille_j());
 //				System.out.println(prepare.toString());
 
 				prepare.executeUpdate();
@@ -152,13 +154,35 @@ public class MaisonDAO extends ObjectDao<Maison> {
 	}
 	
 	@Override
-	public void selection_geographique(Objet_Postgre<Maison> obj, PGgeometry polygone){
+	public void selection_geographique(Buffer obj, Float Xobs, Float Yobs, int interval_de_maille){
 		
+		//recuperation de la maille observateur
+		//TODO ajouter False!!
+		int maille_observateur_i = (int)(Xobs/interval_de_maille);
+		int maille_observateur_j = (int)(Yobs/interval_de_maille);
+		//inscription de la maille observateur dans L'objet en mémoire
+		obj.set_Maille_Observateur(maille_observateur_i, maille_observateur_j);
+		//ecriture du Polygone de requête selon paramètre de génération
+		//1-récupération des mailles extremes de l'espace à mettre en mémoire
+		int mailleMax_i = maille_observateur_i + obj.demi_espace_mémoire_maille();
+		int mailleMin_i = maille_observateur_i - obj.demi_espace_mémoire_maille();
+		int mailleMax_j = maille_observateur_j + obj.demi_espace_mémoire_maille();
+		int mailleMin_j = maille_observateur_j - obj.demi_espace_mémoire_maille();
+		//2-passage en coordonnées géographiques
+		int Xmin = mailleMin_i * interval_de_maille;
+		int Ymin = mailleMin_j * interval_de_maille;
+		int Xmax = (mailleMax_i + 1) * interval_de_maille; 
+		int Ymax = (mailleMax_j + 1) * interval_de_maille; 
+		
+//		float Xmin = Xobs - ( interval_de_maille*obj.get_paramètre_maille() )/2;
+//		float Ymin =Yobs - ( interval_de_maille*obj.get_paramètre_maille() )/2;
+//		float Xmax =Xobs + ( interval_de_maille*obj.get_paramètre_maille() )/2;
+//		float Ymax =Yobs + ( interval_de_maille*obj.get_paramètre_maille() )/2;
+		
+		String Polygone = "SRID=" + "4326" + ";" + "POLYGON(("+Xmin+" "+ Ymin+ ","+Xmax+" "+Ymin+","+ Xmax+" "+ Ymax+","+ Xmin+" "+ Ymax+","+ Xmin+" "+ Ymin+"))";
+		PGgeometry polygone;
 		try {
-			
-			//vidage préalable du vecteur
-			obj.VideObjets();
-			
+			polygone = new PGgeometry(Polygone);			
 	        ResultSet result = this .connect
 	                                .createStatement(
 	                                        	ResultSet.TYPE_SCROLL_INSENSITIVE, 
@@ -168,13 +192,10 @@ public class MaisonDAO extends ObjectDao<Maison> {
 	     //" SELECT * FROM maison2 WHERE ST_WITHIN(centroid, ST_GeomFromText('POLYGON((2000 2000,8000 2000, 8000 8000, 2000 8000, 2000 2000))', 4326) )  ;" 
 	      " SELECT * FROM maison2 WHERE ST_WITHIN(centroid, ST_GeomFromText('"+polygone.getValue()+"', 4326) ) ;"
 	                                        		 );
-	        //System.out.println(result.toString());
 			Maison home1 = new Maison();
-
 
 			while(result.next()){
 				if(result.absolute(result.getRow()))
-				//System.out.println(result.getInt("maison_id"));
 					
 	        		home1 = new Maison(
 	        					result.getInt("maison_id"),
@@ -183,18 +204,30 @@ public class MaisonDAO extends ObjectDao<Maison> {
 	        					result.getString("maison_z"),
 	        					result.getString("maison_nom"),
 	        					(PGgeometry)result.getObject("centroid"),
-	        					result.getInt("niveau")
+	        					result.getInt("niveau"),
+	        					result.getInt("i"),
+	        					result.getInt("j")
 	        				 	);
 	        		//retourne adresses objets	
 					//System.out.print("Maison_id "+home1.getId()+" ");System.out.println("@ "+home1.toString());
 					//on passe en paramètre la maille contenant l'observateur
-					obj.AjoutObjet(home1, 50, 50);
+			
+
+					obj.AjoutObjet(home1, maille_observateur_i, maille_observateur_i);
 	        					}
 	        	
 		    } catch (SQLException e) {
 		            e.printStackTrace();
 		    }
 
+		
+	}
+
+
+	@Override
+	public void selection_geographique_par_polygone(
+			Objet_Postgre<Lampadaire> obj, PGgeometry polygone) {
+		// TODO Auto-generated method stub
 		
 	}
 	

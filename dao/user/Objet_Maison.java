@@ -57,17 +57,15 @@ public class Objet_Maison extends Objet_Postgre<Maison> {
 //		System.out.print(maison.j+" ");System.out.println(mailleobservateur_j);
 //
 
-		int deltai = maison.i - mailleobservateur_i;
-		int deltaj = maison.j - mailleobservateur_j;
+		int deltai = maison.getMaille_i() - mailleobservateur_i;
+		int deltaj = maison.getMaille_j() - mailleobservateur_j;
 //
 //		System.out.println(deltai + this.centre_relatif);
 //		System.out.println(deltaj + this.centre_relatif);
-		System.out.print(this.matrice_des_objets_instancies[deltai + this.centre_relatif][deltaj + this.centre_relatif]+" "); System.out.println(this.objets_instanciated2.elementAt(this.matrice_des_objets_instancies[deltai + this.centre_relatif][deltaj + this.centre_relatif]).size());
+		//System.out.print(this.matrice_des_objets_instancies[deltai + this.centre_relatif][deltaj + this.centre_relatif]+" "); System.out.println(this.objets_instanciated2.elementAt(this.matrice_des_objets_instancies[deltai + this.centre_relatif][deltaj + this.centre_relatif]).size());
 	
 		this.objets_instanciated2.elementAt(this.matrice_des_objets_instancies[deltai + this.centre_relatif][deltaj + this.centre_relatif]).add(maison);
 		nombre_objets++;
-		
-		
 		
 	}
 	

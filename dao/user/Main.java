@@ -1,12 +1,15 @@
 package iasig.dao.user;
 
 import java.sql.SQLException;
+import java.util.Vector;
 
 import org.postgis.PGgeometry;
 
+import iasig.dao.GenericDAO;
 import iasig.dao.LampadaireDAO;
 import iasig.dao.MaisonDAO;
 import iasig.dao.RasterDao;
+import iasig.dao.VoirieDAO;
 
 public class Main {
 
@@ -17,106 +20,119 @@ public class Main {
 	public static void main(String[] args) {
 		
 		//Instanciation des classes d'objets DAO
-		MaisonDAO maisonDao = new MaisonDAO();
-		LampadaireDAO lampadaireDao = new LampadaireDAO();
-		RasterDao rasterDao = new RasterDao();
+		GenericDAO daoObjets = new GenericDAO();
+		VoirieDAO voirieDao = new VoirieDAO();
+		
+		Vector<Voirie> v = voirieDao.LoadVoirie();
+		System.out.println(v.size());
+		for (int i =0; i <10; i++){
+		System.out.print(v.elementAt(i).getToponyme()+" longueur= ");System.out.println(v.elementAt(i).getMultiLineString().length());
+		}
 
-		//Instanciation des Vecteurs d'Objets
-		Objet_Maison objets_maisons = new Objet_Maison(60);
 		
-		Raster_Postgre tuiles_mnt = new Raster_Postgre();
-		Raster_Postgre tuiles_orthophoto = new Raster_Postgre();
-	
+		//INITIALISATION DU BUFFER OBJET
+		//Instanciation du l'objet Vecteurs d'Objets en mémoire
+		//recupere une surface de X*X maille centrée sur l'obj.	
+		Buffer objet_en_memoire2 = new Buffer(60, 6000, 6000, 100, 10);
+		
+		//CREATION D'UN VECTEUR DE COORDONNEES DE MAILLES POUR TEST
+		Vector<int[]> liste_de_mailles = new Vector<int[]>();
+		for (int j = 0; j < objet_en_memoire2.embryon_buffer_visible.size(); j++ ){
+			int[] tmp = { objet_en_memoire2.embryon_buffer_visible.elementAt(j)[0] + objet_en_memoire2.mailleobservateur_i, 
+					   objet_en_memoire2.embryon_buffer_visible.elementAt(j)[1] + objet_en_memoire2.mailleobservateur_j};
+			liste_de_mailles.add(tmp);
+		}
+		
+		Vector<Vector<Object>> objet_visible = objet_en_memoire2.getObjet_par_maille(liste_de_mailles);
+		//FIN INITIALISATION
+		
+		
+//			 //Deplacement de l'observateur
+		for (int i =0; i<25; i++){
+			 float Xobs = 6000 + 100*i;
+			 float Yobs = 6000 + 100*i;
+			 
+			 int mobsi = (int)Xobs/100;
+			 int mobsj = (int)Yobs/100;
+			 
+			 liste_de_mailles.clear();
+			 //SIMULATION DEPLACEMENT MOBILE
+				for (int j = 0; j < objet_en_memoire2.embryon_buffer_visible.size(); j++ ){
+					int[] tmp = { objet_en_memoire2.embryon_buffer_visible.elementAt(j)[0] + mobsi, 
+							   objet_en_memoire2.embryon_buffer_visible.elementAt(j)[1] + mobsj};
+					liste_de_mailles.add(tmp);
+				}
+				objet_visible.clear();
+				objet_visible = objet_en_memoire2.getObjet_par_maille(liste_de_mailles);
+			 
+				//STATISTIQUES
+				int nbreobj = 0;
+				for (int j =0; j< objet_visible.size(); j++){
+					//System.out.println(ploup.elementAt(i).size()+" objets chargés dans la maille");
+					nbreobj = nbreobj + objet_visible.elementAt(j).size();
+				}
+//				
+				System.out.println(objet_en_memoire2.NbreObjets() + " Objets dans le Buffers");
+				System.out.println(objet_visible.size()+" Mailles à afficher ");
+				System.out.println(nbreobj + " objets chargé depuis le Buffer");
+//				//FIN STATISTIQUES
 				
-		
-		//* ECRIRE UN POLYGONE STYLE POSTGIS
-		try {
-			String Polygone = "SRID=" + "4326" + ";" + "POLYGON((2000 2000,8000 2000, 8000 8000, 2000 8000, 2000 2000))";
-			PGgeometry polygone = new PGgeometry(Polygone);
-			System.out.println(polygone.getGeometry());
+				
+				
+		}
 			
+			
+//		
+		
 			//SELECTION GEOMETRIQUE SUR LA BASE DE DONNEES
+			//passage d'une position observateur et interval de maille
+			//maisonDao.selection_geographique(objet_en_memoire, (float)6000.0, (float)6000.0, 100);
+			//objet_en_memoire2.vide_Objet_en_memoire();
 			
-			maisonDao.selection_geographique(objets_maisons, polygone);
-			//EXPLORE VECTEUR DES OBJETS INSTANCIES
-			objets_maisons.getObjet_par_niveau(1);
 			
+		//	daoObjets.selection_geographique(objet_en_memoire2, Xobs, Yobs, 100);
+
 			
-			//AFFICHAGE DES COORDONNEES X et Y des Objets
-//			for (Integer i = 0; i < objets_maisons.NbreObjets(); i++){
-//				System.out.print(objets_maisons.getElement(i).getX1()+" ");	System.out.println(objets_maisons.getElement(i).getY1());
+//			//CREATION D'UN VECTEUR DE COORDONNEES DE MAILLES POUR TEST
+//			Vector<int[]> liste_de_mailles = new Vector<int[]>();
+//			for (int j = 56; j < 65; j++ ){
+//				for (int k =56; k < 65; k++ ){
+//					int[] maill = {j, k};
+//					liste_de_mailles.add(maill);
 //				}
-//				System.out.print(objets_maisons.NbreObjets());
-//		
+			
+			
+		//TETS SELECTION DU SUBSET DU BUFFER
+//			Vector<Vector<Object>> ploup = objet_en_memoire2.getObjet_par_maille(liste_de_mailles);
 //			
-				
-				
-		//* REMPLISSAGE DU VECTEUR TUILE - POSTGIS
-		
-		//ST_GeomFromText('MULTIPOLYGON(((100 100, 100 0, 0 0, 0 100, 100 100))
-//		String PolygoneRaster = "SRID=" + "4326" + ";" + "POLYGON((100 100, 100 0, 0 0, 0 100, 100 100))";
-//		PGgeometry polygoneR = new PGgeometry(PolygoneRaster);
-//		RasterDao.Recup_tuiles_depuis_BDD(tuiles_mnt, polygoneR);
-//		
-//		for (int i = 0 ; i < tuiles_mnt.nbreElements(); i++){
-//		System.out.print(tuiles_mnt.getXorigine(i)+" ");	System.out.println(tuiles_mnt.getYorigine(i));
+			//STATISTIQUES
+			int nbreobj = 0;
+			for (int j =0; j< objet_visible.size(); j++){
+				//System.out.println(ploup.elementAt(i).size()+" objets chargés dans la maille");
+				nbreobj = nbreobj + objet_visible.elementAt(j).size();
+			}
+//			
+			System.out.println(objet_en_memoire2.NbreObjets() + " Objets dans le Buffers");
+			System.out.println(objet_visible.size()+" Mailles à afficher ");
+			System.out.println(nbreobj + " objets chargé depuis le Buffer");
+//			//FIN STATISTIQUES
+//
 //		}
-//		
-//		
-//		System.out.print("nbres de tuiles en mémoires: "+tuiles_mnt.nbreElements());
-
-		
-	
-				
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}		
-	
-
-		//for(long i = 1; i <= 95; i++)
-				//System.out.println(maisonDao.find(i).getCentroid());
-				
-				//*
-//				for (Integer j = 1; j <= 10; j++){
-//				for(Integer i = 1; i <= 10000; i++){
-//					//public Maison(Integer id, String X, String Y, String Z, String nom, PGgeometry centroid)
-//		//
-//		//
-//					Integer X = 1 + (int)(Math.random() * ((10000 - 1) + 1));
-//					Integer Y = 1 + (int)(Math.random() * ((10000 - 1) + 1));
-//					Integer Z = 1 + (int)(Math.random() * ((10000 - 1) + 1));
-//		//
+			
 //			
-//					String PGgeometryStr ="SRID=" + "4326" + ";" + "POINT("+Long.toString(X)+" "+Long.toString(Y)+" "+Long.toString(Z)+")";
-//					PGgeometry pg = null;
-//					
-//					try {
-//						pg = new PGgeometry(PGgeometry.geomFromString(PGgeometryStr));
-//					} catch (SQLException e) {
-//						// TODO Auto-generated catch block
-//						e.printStackTrace();
-//					} 
-//					Maison maison = new Maison(0, Long.toString(X), Long.toString(Y), Long.toString(Z), "Maison"+Long.toString(i*j), pg, i%4 );
-//					maisonDao.create(maison);
-//				}
-//				}
-				//*/
-				
-				//* ECRIRE UN POLYGONE STYLE POSTGRESQL - NON POSTGIS
-//					PGpoint pt1 = new PGpoint(2000, 2000);
-//					PGpoint pt2 = new PGpoint(8000, 2000);
-//					PGpoint pt3 = new PGpoint(8000, 8000);
-//					PGpoint pt4 = new PGpoint(2000, 8000);
-//					PGpoint pt5 = new PGpoint(2000, 2000);
-		//
-//					PGpoint[] points = {pt1, pt2, pt3, pt4, pt5};
-//					PGpolygon polygone = new PGpolygon(points);
-				//*/
-		
-	}
+//			for (int i = 0; i< liste_de_mailles.size(); i++){
+//				System.out.print(liste_de_mailles.elementAt(i)[0]+" "+ liste_de_mailles.elementAt(i)[1]+ " ");
+//				System.out.print(liste_de_mailles.elementAt(i)[0] - objet_en_memoire.mailleobservateur_i + objet_en_memoire.centre_relatif + " ");
+//				System.out.println(liste_de_mailles.elementAt(i)[1] - objet_en_memoire.mailleobservateur_j + objet_en_memoire.centre_relatif);
+			}
+			
+
+			
+			
+			
+			
+}
 
 
 
 	
-}
