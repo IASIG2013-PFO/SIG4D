@@ -20,9 +20,12 @@ public class Main {
 	public static void main(String[] args) {
 		
 		//Instanciation des classes d'objets DAO
+		//Chargement de l'objet pour obtenir la visibilité sur les méthode DAO
+		//Devrait passer en Static
 		GenericDAO daoObjets = new GenericDAO();
-		VoirieDAO voirieDao = new VoirieDAO();
 		
+		
+		VoirieDAO voirieDao = new VoirieDAO();
 		Vector<Voirie> v = voirieDao.LoadVoirie();
 		System.out.println(v.size());
 		for (int i =0; i <10; i++){
@@ -36,6 +39,7 @@ public class Main {
 		Buffer objet_en_memoire2 = new Buffer(60, 6000, 6000, 100, 10);
 		
 		//CREATION D'UN VECTEUR DE COORDONNEES DE MAILLES POUR TEST
+		//Cette liste est crée d'après la taille de l'espace visible décidé en utilisant l'embryon_buffer_visible (tableau d'indice de maille relatif)
 		Vector<int[]> liste_de_mailles = new Vector<int[]>();
 		for (int j = 0; j < objet_en_memoire2.embryon_buffer_visible.size(); j++ ){
 			int[] tmp = { objet_en_memoire2.embryon_buffer_visible.elementAt(j)[0] + objet_en_memoire2.mailleobservateur_i, 
@@ -47,7 +51,7 @@ public class Main {
 		//FIN INITIALISATION
 		
 		
-//			 //Deplacement de l'observateur
+		//Simulation Deplacement de l'observateur
 		for (int i =0; i<25; i++){
 			 float Xobs = 6000 + 100*i;
 			 float Yobs = 6000 + 100*i;
@@ -55,13 +59,16 @@ public class Main {
 			 int mobsi = (int)Xobs/100;
 			 int mobsj = (int)Yobs/100;
 			 
+			 //Mise à jour de la liste de maille visible après déplacement de l'observateur
 			 liste_de_mailles.clear();
+			 
 			 //SIMULATION DEPLACEMENT MOBILE
 				for (int j = 0; j < objet_en_memoire2.embryon_buffer_visible.size(); j++ ){
 					int[] tmp = { objet_en_memoire2.embryon_buffer_visible.elementAt(j)[0] + mobsi, 
 							   objet_en_memoire2.embryon_buffer_visible.elementAt(j)[1] + mobsj};
 					liste_de_mailles.add(tmp);
 				}
+				//Penser à automatiser le nettoyage des buffers
 				objet_visible.clear();
 				objet_visible = objet_en_memoire2.getObjet_par_maille(liste_de_mailles);
 			 
