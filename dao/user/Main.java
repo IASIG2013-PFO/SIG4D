@@ -28,18 +28,10 @@ public class Main {
 		//INITIALISATION DU BUFFER OBJET
 		//Instanciation du l'objet Vecteurs d'Objets en mémoire
 		//recupere une surface de X*X maille centrée sur l'obj.	
-		Buffer objet_en_memoire2 = new Buffer(10, 6000, 6000, 100, 3);
+		Buffer objet_en_memoire2 = new Buffer(10, 9000, 9000, 100, 3);
 		
-		//CREATION D'UN VECTEUR DE COORDONNEES DE MAILLES POUR TEST
-		//Cette liste est crée d'après la taille de l'espace visible décidé en utilisant l'embryon_buffer_visible (tableau d'indice de maille relatif)
-		Vector<int[]> liste_de_mailles = new Vector<int[]>();
-		for (int j = 0; j < objet_en_memoire2.embryon_buffer_visible.size(); j++ ){
-			int[] tmp = { objet_en_memoire2.embryon_buffer_visible.elementAt(j)[0] + objet_en_memoire2.mailleobservateur_i, 
-					   objet_en_memoire2.embryon_buffer_visible.elementAt(j)[1] + objet_en_memoire2.mailleobservateur_j};
-			liste_de_mailles.add(tmp);
-		}
+
 		
-		Vector<Vector<Object>> objet_visible = objet_en_memoire2.getObjet_par_maille(liste_de_mailles);
 		//FIN INITIALISATION
 		
 		
@@ -47,8 +39,8 @@ public class Main {
 		
 		//Simulation Deplacement de l'observateur
 		for (int i =0; i<25; i++){
-			 float Xobs = 6000 + 100*i;
-			 float Yobs = 6000 + 100*i;
+			 float Xobs = 9000 + 100*i;
+			 float Yobs = 9000 + 100*i;
 			 
 			 
 		
