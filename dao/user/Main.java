@@ -8,7 +8,6 @@ import org.postgis.PGgeometry;
 import iasig.dao.GenericDAO;
 import iasig.dao.LampadaireDAO;
 import iasig.dao.MaisonDAO;
-import iasig.dao.RasterDao;
 import iasig.dao.VoirieDAO;
 
 public class Main {
@@ -25,13 +24,6 @@ public class Main {
 		GenericDAO daoObjets = new GenericDAO();
 		
 		
-		VoirieDAO voirieDao = new VoirieDAO();
-		Vector<Voirie> v = voirieDao.LoadVoirie();
-		System.out.println(v.size());
-		for (int i =0; i <10; i++){
-		System.out.print(v.elementAt(i).getToponyme()+" longueur= ");System.out.println(v.elementAt(i).getMultiLineString().length());
-		}
-
 		
 		//INITIALISATION DU BUFFER OBJET
 		//Instanciation du l'objet Vecteurs d'Objets en mémoire
@@ -88,30 +80,6 @@ public class Main {
 				
 		}
 			
-			
-//		
-		
-			//SELECTION GEOMETRIQUE SUR LA BASE DE DONNEES
-			//passage d'une position observateur et interval de maille
-			//maisonDao.selection_geographique(objet_en_memoire, (float)6000.0, (float)6000.0, 100);
-			//objet_en_memoire2.vide_Objet_en_memoire();
-			
-			
-		//	daoObjets.selection_geographique(objet_en_memoire2, Xobs, Yobs, 100);
-
-			
-//			//CREATION D'UN VECTEUR DE COORDONNEES DE MAILLES POUR TEST
-//			Vector<int[]> liste_de_mailles = new Vector<int[]>();
-//			for (int j = 56; j < 65; j++ ){
-//				for (int k =56; k < 65; k++ ){
-//					int[] maill = {j, k};
-//					liste_de_mailles.add(maill);
-//				}
-			
-			
-		//TETS SELECTION DU SUBSET DU BUFFER
-//			Vector<Vector<Object>> ploup = objet_en_memoire2.getObjet_par_maille(liste_de_mailles);
-//			
 			//STATISTIQUES
 			int nbreobj = 0;
 			for (int j =0; j< objet_visible.size(); j++){
@@ -123,18 +91,16 @@ public class Main {
 			System.out.println(objet_visible.size()+" Mailles à afficher ");
 			System.out.println(nbreobj + " objets chargé depuis le Buffer");
 //			//FIN STATISTIQUES
-//
-//		}
 			
-//			
-//			for (int i = 0; i< liste_de_mailles.size(); i++){
-//				System.out.print(liste_de_mailles.elementAt(i)[0]+" "+ liste_de_mailles.elementAt(i)[1]+ " ");
-//				System.out.print(liste_de_mailles.elementAt(i)[0] - objet_en_memoire.mailleobservateur_i + objet_en_memoire.centre_relatif + " ");
-//				System.out.println(liste_de_mailles.elementAt(i)[1] - objet_en_memoire.mailleobservateur_j + objet_en_memoire.centre_relatif);
+			
+			
+			
+
 			}
 			
 
-			
+	
+//*/
 			
 			
 			

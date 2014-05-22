@@ -1,7 +1,7 @@
 package iasig.dao;
 
 import iasig.dao.DAO;
-import iasig.dao.GDALtest;
+
 import iasig.dao.user.Lampadaire;
 import iasig.dao.user.Maison;
 import iasig.dao.user.Objet_Maison;
@@ -39,11 +39,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
-import org.gdal.gdal.Band;
-import org.gdal.gdal.Dataset;
-import org.gdal.gdal.GCP;
-import org.gdal.gdal.gdal;
-import org.gdal.gdalconst.gdalconstConstants;
+
 import org.postgis.PGgeometry;
 
 public class LampadaireDAO extends ObjectDao<Lampadaire> {

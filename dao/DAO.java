@@ -23,11 +23,7 @@ import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Vector;
 
-import org.gdal.gdal.Band;
-import org.gdal.gdal.Dataset;
-import org.gdal.gdal.GCP;
-import org.gdal.gdal.gdal;
-import org.gdal.gdalconst.gdalconstConstants;
+
 import org.postgis.PGgeometry;
 
 
