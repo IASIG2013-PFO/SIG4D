@@ -28,7 +28,7 @@ public class Main {
 		//INITIALISATION DU BUFFER OBJET
 		//Instanciation du l'objet Vecteurs d'Objets en mémoire
 		//recupere une surface de X*X maille centrée sur l'obj.	
-		Buffer objet_en_memoire2 = new Buffer(60, 6000, 6000, 100, 10);
+		Buffer objet_en_memoire2 = new Buffer(10, 6000, 6000, 100, 3);
 		
 		//CREATION D'UN VECTEUR DE COORDONNEES DE MAILLES POUR TEST
 		//Cette liste est crée d'après la taille de l'espace visible décidé en utilisant l'embryon_buffer_visible (tableau d'indice de maille relatif)
@@ -43,67 +43,34 @@ public class Main {
 		//FIN INITIALISATION
 		
 		
+		
+		
 		//Simulation Deplacement de l'observateur
 		for (int i =0; i<25; i++){
 			 float Xobs = 6000 + 100*i;
 			 float Yobs = 6000 + 100*i;
 			 
-			 int mobsi = (int)Xobs/100;
-			 int mobsj = (int)Yobs/100;
 			 
-			 //Mise à jour de la liste de maille visible après déplacement de l'observateur
-			 liste_de_mailles.clear();
+		
+				GenericDAO.selection_geographique(objet_en_memoire2, Xobs, Yobs, 100);
+
 			 
-			 //SIMULATION DEPLACEMENT MOBILE
-				for (int j = 0; j < objet_en_memoire2.embryon_buffer_visible.size(); j++ ){
-					int[] tmp = { objet_en_memoire2.embryon_buffer_visible.elementAt(j)[0] + mobsi, 
-							   objet_en_memoire2.embryon_buffer_visible.elementAt(j)[1] + mobsj};
-					liste_de_mailles.add(tmp);
-				}
-				//Penser à automatiser le nettoyage des buffers
-				objet_visible.clear();
-				objet_visible = objet_en_memoire2.getObjet_par_maille(liste_de_mailles);
 			 
+			
+			 
+			
+				
+	
 				//STATISTIQUES
-				int nbreobj = 0;
-				for (int j =0; j< objet_visible.size(); j++){
-					//System.out.println(ploup.elementAt(i).size()+" objets chargés dans la maille");
-					nbreobj = nbreobj + objet_visible.elementAt(j).size();
-				}
-//				
 				System.out.println(objet_en_memoire2.NbreObjets() + " Objets dans le Buffers");
-				System.out.println(objet_visible.size()+" Mailles à afficher ");
-				System.out.println(nbreobj + " objets chargé depuis le Buffer");
-//				//FIN STATISTIQUES
+				//FIN STATISTIQUES
 				
 				
 				
 		}
 			
-			//STATISTIQUES
-			int nbreobj = 0;
-			for (int j =0; j< objet_visible.size(); j++){
-				//System.out.println(ploup.elementAt(i).size()+" objets chargés dans la maille");
-				nbreobj = nbreobj + objet_visible.elementAt(j).size();
-			}
-//			
-			System.out.println(objet_en_memoire2.NbreObjets() + " Objets dans le Buffers");
-			System.out.println(objet_visible.size()+" Mailles à afficher ");
-			System.out.println(nbreobj + " objets chargé depuis le Buffer");
-//			//FIN STATISTIQUES
-			
-			
-			
-			
-
-			}
-			
-
+	}	
 	
-//*/
-			
-			
-			
 }
 
 
