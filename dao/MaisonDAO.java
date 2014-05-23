@@ -33,10 +33,6 @@ import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Vector;
 
-import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
 
 import org.postgis.PGgeometry;
 
@@ -147,87 +143,96 @@ public class MaisonDAO extends ObjectDao<Maison> {
 	    }
 	}
 	
+//	@Override
+//	public void selection_geographique(Obj, Float Xobs, Float Yobs, int interval_de_maille){
+//		
+//		//recuperation de la maille observateur
+//		//TODO ajouter False!!
+//		int maille_observateur_i = (int)(Xobs/interval_de_maille);
+//		int maille_observateur_j = (int)(Yobs/interval_de_maille);
+//		//inscription de la maille observateur dans L'objet en mémoire
+//		obj.set_Maille_Observateur(maille_observateur_i, maille_observateur_j);
+//		//ecriture du Polygone de requête selon paramètre de génération
+//		//1-récupération des mailles extremes de l'espace à mettre en mémoire
+//		int mailleMax_i = maille_observateur_i + obj.demi_espace_mémoire_maille();
+//		int mailleMin_i = maille_observateur_i - obj.demi_espace_mémoire_maille();
+//		int mailleMax_j = maille_observateur_j + obj.demi_espace_mémoire_maille();
+//		int mailleMin_j = maille_observateur_j - obj.demi_espace_mémoire_maille();
+//		//2-passage en coordonnées géographiques
+//		int Xmin = mailleMin_i * interval_de_maille;
+//		int Ymin = mailleMin_j * interval_de_maille;
+//		int Xmax = (mailleMax_i + 1) * interval_de_maille; 
+//		int Ymax = (mailleMax_j + 1) * interval_de_maille; 
+//		
+////		float Xmin = Xobs - ( interval_de_maille*obj.get_paramètre_maille() )/2;
+////		float Ymin =Yobs - ( interval_de_maille*obj.get_paramètre_maille() )/2;
+////		float Xmax =Xobs + ( interval_de_maille*obj.get_paramètre_maille() )/2;
+////		float Ymax =Yobs + ( interval_de_maille*obj.get_paramètre_maille() )/2;
+//		
+//		String Polygone = "SRID=" + "4326" + ";" + "POLYGON(("+Xmin+" "+ Ymin+ ","+Xmax+" "+Ymin+","+ Xmax+" "+ Ymax+","+ Xmin+" "+ Ymax+","+ Xmin+" "+ Ymin+"))";
+//		PGgeometry polygone;
+//		try {
+//			polygone = new PGgeometry(Polygone);			
+//	        ResultSet result = this .connect
+//	                                .createStatement(
+//	                                        	ResultSet.TYPE_SCROLL_INSENSITIVE, 
+//	                                            ResultSet.TYPE_SCROLL_INSENSITIVE
+//	                                         ).executeQuery(
+//	                                        		
+//	     //" SELECT * FROM maison2 WHERE ST_WITHIN(centroid, ST_GeomFromText('POLYGON((2000 2000,8000 2000, 8000 8000, 2000 8000, 2000 2000))', 4326) )  ;" 
+//	      " SELECT * FROM maison2 WHERE ST_WITHIN(centroid, ST_GeomFromText('"+polygone.getValue()+"', 4326) ) ;"
+//	                                        		 );
+//			Maison home1 = new Maison();
+//
+//			while(result.next()){
+//				if(result.absolute(result.getRow()))
+//					
+//	        		home1 = new Maison(
+//	        					result.getInt("maison_id"),
+//	        					result.getString("maison_x"),
+//	        					result.getString("maison_y"),
+//	        					result.getString("maison_z"),
+//	        					result.getString("maison_nom"),
+//	        					(PGgeometry)result.getObject("centroid"),
+//	        					result.getInt("niveau"),
+//	        					result.getInt("i"),
+//	        					result.getInt("j")
+//	        				 	);
+//	        		//retourne adresses objets	
+//					//System.out.print("Maison_id "+home1.getId()+" ");System.out.println("@ "+home1.toString());
+//					//on passe en paramètre la maille contenant l'observateur
+//			
+//
+//					obj.AjoutObjet(home1);
+//	        					}
+//	        	
+//		    } catch (SQLException e) {
+//		            e.printStackTrace();
+//		    }
+//
+//		
+//	}
+
+
+
+	
+
+	
+
+
 	@Override
-	public void selection_geographique(Buffer obj, Float Xobs, Float Yobs, int interval_de_maille){
-		
-		//recuperation de la maille observateur
-		//TODO ajouter False!!
-		int maille_observateur_i = (int)(Xobs/interval_de_maille);
-		int maille_observateur_j = (int)(Yobs/interval_de_maille);
-		//inscription de la maille observateur dans L'objet en mémoire
-		obj.set_Maille_Observateur(maille_observateur_i, maille_observateur_j);
-		//ecriture du Polygone de requête selon paramètre de génération
-		//1-récupération des mailles extremes de l'espace à mettre en mémoire
-		int mailleMax_i = maille_observateur_i + obj.demi_espace_mémoire_maille();
-		int mailleMin_i = maille_observateur_i - obj.demi_espace_mémoire_maille();
-		int mailleMax_j = maille_observateur_j + obj.demi_espace_mémoire_maille();
-		int mailleMin_j = maille_observateur_j - obj.demi_espace_mémoire_maille();
-		//2-passage en coordonnées géographiques
-		int Xmin = mailleMin_i * interval_de_maille;
-		int Ymin = mailleMin_j * interval_de_maille;
-		int Xmax = (mailleMax_i + 1) * interval_de_maille; 
-		int Ymax = (mailleMax_j + 1) * interval_de_maille; 
-		
-//		float Xmin = Xobs - ( interval_de_maille*obj.get_paramètre_maille() )/2;
-//		float Ymin =Yobs - ( interval_de_maille*obj.get_paramètre_maille() )/2;
-//		float Xmax =Xobs + ( interval_de_maille*obj.get_paramètre_maille() )/2;
-//		float Ymax =Yobs + ( interval_de_maille*obj.get_paramètre_maille() )/2;
-		
-		String Polygone = "SRID=" + "4326" + ";" + "POLYGON(("+Xmin+" "+ Ymin+ ","+Xmax+" "+Ymin+","+ Xmax+" "+ Ymax+","+ Xmin+" "+ Ymax+","+ Xmin+" "+ Ymin+"))";
-		PGgeometry polygone;
-		try {
-			polygone = new PGgeometry(Polygone);			
-	        ResultSet result = this .connect
-	                                .createStatement(
-	                                        	ResultSet.TYPE_SCROLL_INSENSITIVE, 
-	                                            ResultSet.TYPE_SCROLL_INSENSITIVE
-	                                         ).executeQuery(
-	                                        		
-	     //" SELECT * FROM maison2 WHERE ST_WITHIN(centroid, ST_GeomFromText('POLYGON((2000 2000,8000 2000, 8000 8000, 2000 8000, 2000 2000))', 4326) )  ;" 
-	      " SELECT * FROM maison2 WHERE ST_WITHIN(centroid, ST_GeomFromText('"+polygone.getValue()+"', 4326) ) ;"
-	                                        		 );
-			Maison home1 = new Maison();
-
-			while(result.next()){
-				if(result.absolute(result.getRow()))
-					
-	        		home1 = new Maison(
-	        					result.getInt("maison_id"),
-	        					result.getString("maison_x"),
-	        					result.getString("maison_y"),
-	        					result.getString("maison_z"),
-	        					result.getString("maison_nom"),
-	        					(PGgeometry)result.getObject("centroid"),
-	        					result.getInt("niveau"),
-	        					result.getInt("i"),
-	        					result.getInt("j")
-	        				 	);
-	        		//retourne adresses objets	
-					//System.out.print("Maison_id "+home1.getId()+" ");System.out.println("@ "+home1.toString());
-					//on passe en paramètre la maille contenant l'observateur
-			
-
-					obj.AjoutObjet(home1, maille_observateur_i, maille_observateur_i);
-	        					}
-	        	
-		    } catch (SQLException e) {
-		            e.printStackTrace();
-		    }
-
-		
-	}
-
-
-	@Override
-	public void selection_geographique_par_polygone(
-			Objet_Postgre<Lampadaire> obj, PGgeometry polygone) {
+	public void selection_geographique(Buffer obj, Float Xobs, Float Yobs,
+			int interval_de_maille) {
 		// TODO Auto-generated method stub
 		
 	}
-	
 
-	
-}
+	@Override
+	public void selection_geographique_par_polygone(Objet_Postgre<Maison> obj,
+			PGgeometry polygone) {
+		// TODO Auto-generated method stub
+		
+	}}
 
 
 

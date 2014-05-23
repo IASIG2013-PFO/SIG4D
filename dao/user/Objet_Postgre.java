@@ -12,7 +12,7 @@ public abstract class Objet_Postgre<T> {
 	 * Permet d'ajouter un objet 
 	 * @param obj Un objet
 	 */
-	public abstract  void AjoutObjet(T obj, int mailleobservateur_i,int mailleobservateur_j );
+	public abstract  void AjoutObjet(T obj);
 	
 	/**
 	 * Permet de récupérer un objet via son niveau

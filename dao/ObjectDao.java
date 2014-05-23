@@ -49,7 +49,7 @@ public abstract class ObjectDao<T> extends DAO {
 	 * @param polygone	PGgeometry polygone
 	 * @param obj	Objet_Postgre<T> 
 	 */
-	public abstract void selection_geographique_par_polygone(Objet_Postgre<Lampadaire> obj, PGgeometry polygone);
+	public abstract void selection_geographique_par_polygone(Objet_Postgre<T> obj, PGgeometry polygone);
 
 
  
