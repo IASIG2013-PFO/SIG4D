@@ -1,6 +1,5 @@
 package iasig.dao.user;
 
-import java.util.Vector;
 
 
 public abstract class Objet_Postgre<T> {

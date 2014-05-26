@@ -92,7 +92,7 @@ public class Buffer {
 				System.out.println(maill[0]+" "+maill[1]);
 			}
 		}
-			
+		
 		GenericDAO.selection_geographique_init(this, Xinit, Yinit, interval_de_maille);
 	}
 	
@@ -111,33 +111,36 @@ public class Buffer {
 	 * Permet de mettre à jour la dimension de l'espace visible  
 	 * @param espace_visible entier, la dimension de l'espace visible en maille
 	 */
-	public void set_Maille_Observateur(int espace_visible){
+	public void set_Taille_Buffer(int espace_visible){
 		this.dimension_espace_visible = espace_visible;
 	}
 	
 	
 	/**
 	 * Permet d'ajouter un objet 
+	 * Recupère la maille de rattachement et calcul de la position relative par rapport 
+	 * aux coordonnées de la maille centrale du buffer
+	 * Insertion à l'index correspondant dans le vecteur de vecteur selon typage!
 	 * @param obj Un objet
 	 */
-	public   void AjoutObjet(Object obj, int mailleobservateur_i,int mailleobservateur_j ) {
+	public void AjoutObjet(Object obj) {
 		
-		//methode de remplissage d'un vecteur <Object>
-		//this.objets_instanciated3.add(null);
-		//thisv2.add(new Maison());
+		
 		if(obj instanceof Maison){
 			
-			int deltai = ((Maison) obj).getMaille_i() - mailleobservateur_i;
-			int deltaj =((Maison) obj).getMaille_j() - mailleobservateur_j;
-			//decommenter pour verifier les mailles mises en mémoires
-//			int a =deltai + this.centre_relatif;
-//			int b =deltaj + this.centre_relatif;
-//			System.out.print(a+ " ");System.out.println(b);
-//			System.out.print(deltai+ " ");System.out.println(deltaj);
+			int deltai = ((Maison) obj).getMaille_i() - this.mailleobservateur_i;
+			int deltaj =((Maison) obj).getMaille_j() - this.mailleobservateur_j;
 			this.objets_instanciated.elementAt(this.matrice_indexation[deltai + this.centre_relatif][deltaj + this.centre_relatif]).add(obj);
 			nombre_objets++;
 		}
 		
+		else if(obj instanceof Lampadaire){
+			
+			int deltai = ((Lampadaire) obj).getMaille_i() - this.mailleobservateur_i;
+			int deltaj =((Lampadaire) obj).getMaille_j() - this.mailleobservateur_j;
+			this.objets_instanciated.elementAt(this.matrice_indexation[deltai + this.centre_relatif][deltaj + this.centre_relatif]).add(obj);
+			nombre_objets++;
+		}	
 	}
 	
 	/**
@@ -194,10 +197,7 @@ public class Buffer {
 			tmp.add(this.objets_instanciated.elementAt(matrice_indexation[liste_de_maille.elementAt(i)[0] - this.mailleobservateur_i + this.centre_relatif][liste_de_maille.elementAt(i)[1] - this.mailleobservateur_j + this.centre_relatif]));
 
 		}
-		//System.out.println(this.objets_instanciated.size());
 
-		
-		//tmp.add(this.objets_instanciated.elementAt(2108));
 		return tmp;
 		
 		

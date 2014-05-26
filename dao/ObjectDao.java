@@ -1,10 +1,7 @@
 package iasig.dao;
 
-import iasig.dao.user.Lampadaire;
 import iasig.dao.user.Objet_Postgre;
 import iasig.dao.user.Buffer;
-
-import java.awt.image.BufferedImage;
 
 import org.postgis.PGgeometry;
 

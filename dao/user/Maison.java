@@ -10,7 +10,10 @@ public class Maison {
 	private String X;
 	private String Y;
 	private String Z;
+	private float rotz;
+	private float echelle;
 	private String nom = "noname";		
+	private PGgeometry geom;
 	private PGgeometry centroid;
 	private Integer niveau;
 	protected String table = "maison2";
@@ -41,14 +44,42 @@ public class Maison {
 			this.nom = nom; 
 			this.niveau = niveau;
 			this.centroid = centroid;
-			Point pt = (Point)centroid.getGeometry();
 			this.maillei = maillei; this.maillej = maillej;
 			}
-	
+		//constructeur4
+		public Maison(Integer id, String nom, float rotz,float echelle, PGgeometry geom, PGgeometry centroid){
+			this();
+			this.id = id;
+			this.nom = nom; 
+			this.rotz = rotz;
+			this.echelle = echelle;
+			this.geom = geom;
+			this.centroid = centroid;
+			Point pt = (Point)centroid.getGeometry();
+			this.maillei = (int) ((int)pt.x/100); this.maillej = (int) ((int)pt.y/100); 
+		}
+		
+		
+
 		//méthodes publique Accesseur
 		public PGgeometry getCentroid()
 		{
 			return centroid;
+		}
+		
+		public PGgeometry getGeom()
+		{
+			return geom;
+		}
+
+		public float getRotz()
+		{
+			return rotz;
+		}
+		
+		public float getEchelle()
+		{
+			return echelle;
 		}
 		
 		public Integer getMaille_i(){

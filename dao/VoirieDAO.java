@@ -5,7 +5,6 @@ import java.sql.SQLException;
 import java.util.Vector;
 
 import iasig.dao.user.Buffer;
-import iasig.dao.user.Lampadaire;
 import iasig.dao.user.Objet_Postgre;
 import iasig.dao.user.Voirie;
 
@@ -83,8 +82,6 @@ public class VoirieDAO extends ObjectDao<Voirie> {
 		// TODO Auto-generated method stub
 		
 	}
-
-
 
 
 	@Override

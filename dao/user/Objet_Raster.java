@@ -14,7 +14,6 @@ public class Objet_Raster extends Objet_Postgre<Raster_img_mnt> {
 	private int ID;
 	private Vector <Raster_img_mnt> vec_Raster=new Vector <Raster_img_mnt>();
 	private String type_raster;
-	private int nombre_objets;
 	
 	/**
 	 * 
@@ -34,7 +33,6 @@ public class Objet_Raster extends Objet_Postgre<Raster_img_mnt> {
 	@Override
 	public void AjoutObjet(Raster_img_mnt Raster){
 		vec_Raster.addElement(Raster);
-		nombre_objets++;
 	}
 	
 	@Override
@@ -47,7 +45,6 @@ public class Objet_Raster extends Objet_Postgre<Raster_img_mnt> {
 	@Override
 	public void VideObjets() {
 		vec_Raster.clear();
-		nombre_objets =0;
 	}
 
 	@Override

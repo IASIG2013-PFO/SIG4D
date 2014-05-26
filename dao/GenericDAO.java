@@ -1,8 +1,10 @@
 package iasig.dao;
 
 import iasig.dao.DAO;
+import iasig.dao.user.Lampadaire;
 import iasig.dao.user.Maison;
 import iasig.dao.user.Buffer;
+import iasig.dao.user.ObjetPonctuel;
 import iasig.dao.user.Objet_Postgre;
 import iasig.dao.user.Raster_img_mnt;
 
@@ -66,30 +68,77 @@ public class GenericDAO extends DAO {
 	                                         ).executeQuery(
 	                                        		
 	     //" SELECT * FROM maison2 WHERE ST_WITHIN(centroid, ST_GeomFromText('POLYGON((2000 2000,8000 2000, 8000 8000, 2000 8000, 2000 2000))', 4326) )  ;" 
-	      " SELECT * FROM maison2 WHERE ST_WITHIN(centroid, ST_GeomFromText('"+polygone.getValue()+"', 4326) ) ;"
-	                                        		 );
-	        Maison home1 = new Maison();
-			while(result.next()){
-				if(result.absolute(result.getRow()))
-										
-	        		home1 = new Maison(
-	        					result.getInt("maison_id"),
-	        					result.getString("maison_x"),
-	        					result.getString("maison_y"),
-	        					result.getString("maison_z"),
-	        					result.getString("maison_nom"),
-	        					(PGgeometry)result.getObject("centroid"),
-	        					result.getInt("niveau"),
-	        					result.getInt("i"),
-	        					result.getInt("j")
-	        				 	);
-	        		//retourne adresses objets	
-					//System.out.print("Maison_id "+home1.getId()+" ");System.out.println("@ "+home1.toString());
-					//on passe en paramètre la maille contenant l'observateur
-			
+	     // " SELECT *, ST_CENTROID(geom) FROM maison2 WHERE ST_WITHIN(centroid, ST_GeomFromText('"+polygone.getValue()+"', 4326) ) ;"
+	      //Multifoncteur - Selectionne l'integralité des champs de la table de objets generiques inclus dans le polygone passé en argument
+	      " SELECT *, ST_CENTROID(geom) FROM generic_object10 WHERE ST_WITHIN(ST_CENTROID(geom), ST_GeomFromText('"+polygone.getValue()+"', 4326) ) ;"
 
-					obj.AjoutObjet(home1, maille_observateur_i, maille_observateur_i);
-	        					}
+	                               );
+	        
+	        //Mise a disposition des conteneurs
+        	Maison home1 = new Maison();
+        	Lampadaire lamp = new Lampadaire();
+        	ObjetPonctuel objet_ponctuel = new ObjetPonctuel();
+        	
+     while(result.next()){
+ 		if(result.absolute(result.getRow()))
+ 			
+ 			switch (result.getString("type")) {
+ 				case "maison":
+ 					//Instanciation d'une maison					
+ 					home1 = new Maison(
+ 							result.getInt("id"),
+ 							result.getString("nom"),
+ 							result.getFloat("rotz"),
+ 							result.getFloat("echelle"),
+
+ 							(PGgeometry)result.getObject("geom"),
+ 							(PGgeometry)result.getObject("st_centroid")
+ 						 	);
+ 					//Ajout de l'objet dans le vecteur de vecteur d'objet
+ 					obj.AjoutObjet(home1);
+ 					break;
+ 				case "lampadaire":
+ 					//Instanciation d'un lampadaire				
+ 					lamp = new Lampadaire(
+ 							result.getInt("id"),
+ 							result.getString("nom"),
+ 							result.getFloat("rotz"),
+ 							result.getFloat("echelle"),
+
+ 							(PGgeometry)result.getObject("geom"),
+ 							(PGgeometry)result.getObject("st_centroid")
+ 						 	);
+ 					//Ajout de l'objet dans le vecteur de vecteur d'objet
+ 					obj.AjoutObjet(lamp);
+ 					
+ 					
+ 					break;
+ 				default:
+ 					//throw new IllegalArgumentException("Invalid type: " + result.getString("type"));
+ 					//instanciation d'un nouvel objet ponctuel
+ 					objet_ponctuel = new ObjetPonctuel(
+ 							result.getInt("id"),
+ 							result.getString("type"),
+ 							result.getString("nom"),
+ 							result.getFloat("rotz"),
+ 							result.getFloat("echelle"),
+ 							(PGgeometry)result.getObject("geom"),
+ 							(PGgeometry)result.getObject("st_centroid")
+ 							);
+ 					//Ajout de l'objet dans le vecteur de vecteur d'objet
+ 					obj.AjoutObjet(objet_ponctuel);
+ 			}
+     }
+
+	                                        		 
+	                                        		 
+	                                        		 
+	                                        		 
+	                                        		 
+	                       		 
+	                                        		 
+	                                        		 
+	       
 	        	
 		    } catch (SQLException e) {
 		            e.printStackTrace();
@@ -158,37 +207,72 @@ public class GenericDAO extends DAO {
 		                                            ResultSet.TYPE_SCROLL_INSENSITIVE
 		                                         ).executeQuery(
 		                                        		
-		     //" SELECT * FROM maison2 WHERE ST_WITHIN(centroid, ST_GeomFromText('POLYGON((2000 2000,8000 2000, 8000 8000, 2000 8000, 2000 2000))', 4326) )  ;" 
-		      " SELECT * FROM maison2 WHERE ST_WITHIN(centroid, ST_GeomFromText('"+polygone.getValue()+"', 4326) ) ;"
-		                                        		 );
-		        Maison home1 = new Maison();
-				while(result.next()){
-					if(result.absolute(result.getRow()))
-											
-		        		home1 = new Maison(
-		        					result.getInt("maison_id"),
-		        					result.getString("maison_x"),
-		        					result.getString("maison_y"),
-		        					result.getString("maison_z"),
-		        					result.getString("maison_nom"),
-		        					(PGgeometry)result.getObject("centroid"),
-		        					result.getInt("niveau"),
-		        					result.getInt("i"),
-		        					result.getInt("j")
-		        				 	);
-		        		//retourne adresses objets	
-						//System.out.print("Maison_id "+home1.getId()+" ");System.out.println("@ "+home1.toString());
-						//on passe en paramètre la maille contenant l'observateur
-				
-	
-						obj.AjoutObjet(home1, maille_observateur_i, maille_observateur_i);
-		        					}
+		     //" SELECT *, ST_Centroid(geom) FROM maison2 WHERE ST_WITHIN(ST_Centroid(geom), ST_GeomFromText('POLYGON((2000 2000,8000 2000, 8000 8000, 2000 8000, 2000 2000))', 4326) )  ;" 
+		     //" SELECT *, ST_Centroid(centroid) FROM maison2 WHERE ST_WITHIN(ST_Centroid(centroid), ST_GeomFromText('"+polygone.getValue()+"', 4326) ) ;"
+		     //Multifoncteur - Selectionne l'integralité des champs de la table de objets generiques inclus dans le polygone passé en argument
+		      " SELECT *, ST_CENTROID(geom) FROM generic_object10 WHERE ST_WITHIN(ST_CENTROID(geom), ST_GeomFromText('"+polygone.getValue()+"', 4326) ) ;"
+
+		                               );
+		        
+		        //Mise a disposition des conteneurs
+	        	Maison home1 = new Maison();
+	        	Lampadaire lamp = new Lampadaire();
+	        	ObjetPonctuel objet_ponctuel = new ObjetPonctuel();
+	        	
+	     while(result.next()){
+	 		if(result.absolute(result.getRow()))
+	 			
+	 			switch (result.getString("type")) {
+	 				case "maison":
+	 					//Instanciation d'une maison					
+	 					home1 = new Maison(
+	 							result.getInt("id"),
+	 							result.getString("nom"),
+	 							result.getFloat("rotz"),
+	 							result.getFloat("echelle"),
+
+	 							(PGgeometry)result.getObject("geom"),
+	 							(PGgeometry)result.getObject("st_centroid")
+	 						 	);
+	 					//Ajout de l'objet dans le vecteur de vecteur d'objet
+	 					obj.AjoutObjet(home1);
+	 					break;
+	 				case "lampadaire":
+	 					//Instanciation d'un lampadaire				
+	 					lamp = new Lampadaire(
+	 							result.getInt("id"),
+	 							result.getString("nom"),
+	 							result.getFloat("rotz"),
+	 							result.getFloat("echelle"),
+
+	 							(PGgeometry)result.getObject("geom"),
+	 							(PGgeometry)result.getObject("st_centroid")
+	 						 	);
+	 					//Ajout de l'objet dans le vecteur de vecteur d'objet
+	 					obj.AjoutObjet(lamp);
+	 					
+	 					
+	 					break;
+	 				default:
+	 					//throw new IllegalArgumentException("Invalid type: " + result.getString("type"));
+	 					//instanciation d'un nouvel objet ponctuel
+	 					objet_ponctuel = new ObjetPonctuel(
+	 							result.getInt("id"),
+	 							result.getString("type"),
+	 							result.getString("nom"),
+	 							result.getFloat("rotz"),
+	 							result.getFloat("echelle"),
+	 							(PGgeometry)result.getObject("geom"),
+	 							(PGgeometry)result.getObject("st_centroid")
+	 							);
+	 					//Ajout de l'objet dans le vecteur de vecteur d'objet
+	 					obj.AjoutObjet(objet_ponctuel);
+	 			}
+	     }
 		        	
 			    } catch (SQLException e) {
 			            e.printStackTrace();
 			    }
-	
-			
 		}
 	
 	
@@ -211,12 +295,11 @@ public class GenericDAO extends DAO {
 	                                            ResultSet.TYPE_SCROLL_INSENSITIVE
 	                                         ).executeQuery(
 	                                        		
-	     //" SELECT * FROM maison2 WHERE ST_WITHIN(centroid, ST_GeomFromText('POLYGON((2000 2000,8000 2000, 8000 8000, 2000 8000, 2000 2000))', 4326) )  ;" 
+//	      " SELECT * FROM maison2 WHERE ST_WITHIN(centroid, ST_GeomFromText('POLYGON((2000 2000,8000 2000, 8000 8000, 2000 8000, 2000 2000))', 4326) )  ;" 
 //	      " SELECT ID, ST_AsPNG(rast) as image, I, J, type_Raster_img_mnt, Resolution FROM route WHERE ST_WITHIN(rast, ST_GeomFromText('"+polygone.getValue()+"', 2154) ) ;"// WHERE gid>="+a+" AND gid<="+b+";"//
-	      " SELECT rid, ST_AsPNG(rast) as img, ST_DumpAsPolygons(rast) AS Raster FROM mnt_img WHERE rid='"+ id +"';"
+	      " SELECT rid, ST_AsPNG(rast) AS img, ST_DumpAsPolygons(rast) AS raster FROM mnt_img WHERE rid='"+ id +"';"
 	                                        		 );
-//	        System.out.println(result.toString());
-	        Raster_img_mnt home1;
+	        Raster_img_mnt raster_img_mnt;
 
 			while(result.next()){
 				if(result.absolute(result.getRow()))
@@ -232,7 +315,7 @@ public class GenericDAO extends DAO {
 						e.printStackTrace();
 					}
 					if(type_raster=="img"){
-		        		home1 = new Raster_img_mnt(
+						raster_img_mnt = new Raster_img_mnt(
 		        					result.getInt("rid"),
 		        					image,i,j,"img",1
 //		        					result.getInt("I"),
@@ -242,9 +325,9 @@ public class GenericDAO extends DAO {
 		        		);
 					}
 					else{
-						home1 = new Raster_img_mnt(
+						raster_img_mnt = new Raster_img_mnt(
 	        					result.getInt("rid"),
-	        					(PGgeometry)result.getObject("Raster"),
+	        					(PGgeometry)result.getObject("raster"),
 	        					i,j,"mnt",1
 //	        					result.getInt("I"),
 //	        					result.getInt("J"),
@@ -254,7 +337,7 @@ public class GenericDAO extends DAO {
 					}
 	        		//retourne adresses objets	
 //					System.out.print("Maison_id "+home1.get_ID()+" ");System.out.println("@ "+home1.toString());
-					obj.AjoutObjet(home1);
+					obj.AjoutObjet(raster_img_mnt);
 					System.out.println("id_ortho "+obj.getElement(0).get_ID()+" ");
 	        	}
 	        	
@@ -264,13 +347,6 @@ public class GenericDAO extends DAO {
 		
 	}
 
-	
-	
-	public void selection_geographique_par_polygone(){
-		//Pas encore implanté
-		
-	}
-	
 }
 
 

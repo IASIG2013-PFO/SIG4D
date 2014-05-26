@@ -9,6 +9,7 @@ import iasig.dao.GenericDAO;
 import iasig.dao.LampadaireDAO;
 import iasig.dao.MaisonDAO;
 import iasig.dao.VoirieDAO;
+import iasig.global.Generation;
 
 public class Main {
 
@@ -21,20 +22,22 @@ public class Main {
 		//Instanciation des classes d'objets DAO
 		//Chargement de l'objet pour obtenir la visibilité sur les méthode DAO
 		//Devrait passer en Static
-		GenericDAO daoObjets = new GenericDAO();
+		//GenericDAO daoObjets = new GenericDAO();
 		
-		
-		
+
 		//INITIALISATION DU BUFFER OBJET
 		//Instanciation du l'objet Vecteurs d'Objets en mémoire
 		//recupere une surface de X*X maille centrée sur l'obj.	
 		Buffer objet_en_memoire2 = new Buffer(10, 9000, 9000, 100, 3);
 		
-
+		//INITIALISATION OBJET RASTER
+		//Objet_Raster objet_raster = new Objet_Raster();
+	
 		
 		//FIN INITIALISATION
 		
-		
+		//TEST SELECTION OBJET RASTER DANS BDD
+		//GenericDAO.selection_raster(objet_raster, 0, 0);
 		
 		
 		//Simulation Deplacement de l'observateur

@@ -8,9 +8,21 @@ public class Lampadaire {
 	
 	private Integer id;
 	private Integer gid;
-	private float X;
-	private float Y;	
+	private String nom;
+	private float rotz;
+	private float echelle;
+	//attribut typés Postgis
+	private PGgeometry geom;
 	private PGgeometry centroid;
+	//Rattachement à une maille
+	private int maillei;
+	private int maillej;
+
+	
+	private float X;
+	private float Y;
+	
+
 	private Integer niveau;
 	protected String table = "lampadaires";
 	
@@ -25,11 +37,40 @@ public class Lampadaire {
 			this.X = X ; this.Y = Y; 
 			this.centroid = centroid;
 			}
+		//constructeur3
+				public Lampadaire(Integer id, String nom, float rotz,float echelle, PGgeometry geom, PGgeometry centroid){
+					this();
+					this.id = id;
+					this.nom = nom; 
+					this.rotz = rotz;
+					this.echelle = echelle;
+					this.geom = geom;
+					this.centroid = centroid;
+					Point pt = (Point)centroid.getGeometry();
+					this.maillei = (int) ((int)pt.x/100); this.maillej = (int) ((int)pt.y/100); 
+				}
+		
+
 	
 		//méthodes publique Accesseur
 		public PGgeometry getCentroid()
 		{
 			return centroid;
+		}
+		
+		public PGgeometry getGeom()
+		{
+			return geom;
+		}
+		
+		public float getRotz()
+		{
+			return rotz;	
+		}
+		
+		public float getEchelle()
+		{
+			return echelle;	
 		}
 		
 		public double getX1(){
@@ -41,6 +82,7 @@ public class Lampadaire {
 			Point pt = (Point)centroid.getGeometry();
 			return pt.y;
 		}
+
 
 		public Integer getId()
 		{
@@ -67,5 +109,17 @@ public class Lampadaire {
 			return Y; 
 		}
 	
+		public String getNom()
+		{
+			return nom;
+		}
+		
+		public Integer getMaille_i(){
+			return maillei;
+		}
+		
+		public Integer getMaille_j(){
+			return maillej;
+		}
 }
 
