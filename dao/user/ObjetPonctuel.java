@@ -2,7 +2,6 @@ package iasig.dao.user;
 
 import org.postgis.PGgeometry;
 import org.postgis.Point;
-import org.postgis.MultiPolygon;
 
 import iasig.global.Generation;; 
 
@@ -85,12 +84,12 @@ public class ObjetPonctuel {
 			
 			public Integer getMaille_i()
 			{
-				return id;
+				return maillei;
 			}
 			
 			public Integer getMaille_j()
 			{
-				return id;
+				return maillej;
 			}
 			
 			public String getNom()

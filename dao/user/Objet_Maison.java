@@ -93,6 +93,22 @@ public class Objet_Maison extends Objet_Postgre<Maison> {
 		return objets_instanciated.elementAt(index);
 	}
 	
+	//Accesseur de la classe
+	
+	public int getMaille_interval()
+	{
+		return maille_interval;
+	}
+	
+	public int getCentre_relatif()
+	{
+		return centre_relatif;
+	}
+	
+	public int getNombre_objets()
+	{
+		return nombre_objets;
+	}
 	
 
 }

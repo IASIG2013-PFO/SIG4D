@@ -1,15 +1,7 @@
 package iasig.dao.user;
 
-import java.sql.SQLException;
-import java.util.Vector;
-
-import org.postgis.PGgeometry;
 
 import iasig.dao.GenericDAO;
-import iasig.dao.LampadaireDAO;
-import iasig.dao.MaisonDAO;
-import iasig.dao.VoirieDAO;
-import iasig.global.Generation;
 
 public class Main {
 
